@@ -74,8 +74,9 @@ case "$os" in
       [ "${TELESTREMIO_DRY_RUN:-}" = "1" ] && exit 0
       say "Installing the package (asks for your password)"
       su=""; [ "$(id -u)" -eq 0 ] || su=sudo
-      # The package adds a menu entry; servers without a desktop lack the menu folder and the setup fails.
-      $su mkdir -p /etc/xdg/menus/applications-merged
+      # The package adds a menu entry with xdg-desktop-menu, which fails on machines without a
+      # desktop (servers): they have no /usr/share/desktop-directories.
+      $su mkdir -p /usr/share/desktop-directories /usr/share/applications
       $su apt-get install -y "$tmp/telestremio.deb"
       say "Done. Open TeleStremio from your app menu."
     else

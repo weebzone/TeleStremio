@@ -105,7 +105,7 @@
       <p>Quickest: paste this in a terminal. On Debian or Ubuntu it installs the package; elsewhere it sets up the jar with a launcher and a menu entry.</p>
       <div class="codeblock"><pre>curl -fsSL https://weebzone.github.io/TeleStremio/install.sh | sh</pre><button class="copy" type="button">Copy</button></div>
       <p class="muted">Or by hand, on Debian or Ubuntu:</p>
-      <div class="codeblock"><pre>sudo mkdir -p /etc/xdg/menus/applications-merged && sudo apt install ./telestremio_*_amd64.deb</pre><button class="copy" type="button">Copy</button></div>
+      <div class="codeblock"><pre>sudo mkdir -p /usr/share/desktop-directories && sudo apt install ./telestremio_*_amd64.deb</pre><button class="copy" type="button">Copy</button></div>
       <p>Elsewhere, keep <span class="mono">libtdjni.so</span> next to the jar and run it with Java 17 or newer:</p>
       <div class="codeblock"><pre>java -jar telestremio-linux-x64.jar</pre><button class="copy" type="button">Copy</button></div>
     </div>
