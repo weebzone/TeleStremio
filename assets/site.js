@@ -56,7 +56,10 @@
     const [title, text, points] = screens[key];
     tabs.forEach((t) => t.setAttribute("aria-selected", String(t.dataset.screen === key)));
     const img = document.querySelector("#screen-img");
-    if (img) { img.dataset.shot = key; img.alt = `TeleStremio ${title} screen`; swapShots(); }
+    if (img) { img.dataset.shot = key; img.alt = `TeleStremio ${title} screen`; }
+    const phone = document.querySelector("#phone-img");
+    if (phone) { phone.dataset.shot = `phone-${key}`; phone.alt = `TeleStremio ${title} screen on Android`; }
+    swapShots();
     const note = document.querySelector(".screen-note");
     if (note) {
       note.querySelector("h3").textContent = title;
