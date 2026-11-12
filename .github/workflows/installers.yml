@@ -1,8 +1,7 @@
 name: Installer scripts
 
-# Runs install.ps1 on Windows and install.sh on macOS and Linux end to end. Until TeleStremio's
-# desktop builds are on the Telegram-Stremio releases, it points them at public projects that
-# ship the same kinds of files (.msi / .dmg / .deb) through TELESTREMIO_REPO.
+# Installs the real TeleStremio from the Telegram-Stremio releases with the one-line installers
+# on Windows, macOS and Linux, then runs the installed app's self-test.
 on:
   push:
     paths: ["install.sh", "install.ps1", ".github/workflows/installers.yml"]
@@ -13,34 +12,34 @@ jobs:
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
-      - name: install.ps1 (real install of a sample .msi)
+      - name: install.ps1
         shell: pwsh
         env:
-          TELESTREMIO_REPO: keepassxreboot/keepassxc
+          GITHUB_TOKEN: ${{ github.token }}
         run: ./install.ps1
-      - name: install.ps1 against Telegram-Stremio (dry run)
+      - name: Installed app runs
         shell: pwsh
-        env:
-          TELESTREMIO_DRY_RUN: "1"
         run: |
-          try { ./install.ps1 } catch { Write-Host "expected until a Windows build is released - $_" }
+          $exe = Get-ChildItem "$env:ProgramFiles", "$env:LOCALAPPDATA" -Recurse -Filter TeleStremio.exe -ErrorAction SilentlyContinue | Select-Object -First 1
+          if (-not $exe) { throw "TeleStremio.exe not found after install" }
+          Write-Host "installed at $($exe.FullName)"
+          $p = Start-Process $exe.FullName -ArgumentList "--selftest" -Wait -PassThru -RedirectStandardOutput out.txt -RedirectStandardError err.txt
+          Get-Content out.txt, err.txt
+          if ($p.ExitCode -ne 0) { throw "self-test exit $($p.ExitCode)" }
 
   macos:
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4
-      - name: install.sh (real install of a sample .dmg)
+      - name: install.sh
         env:
-          TELESTREMIO_REPO: obsidianmd/obsidian-releases
           GITHUB_TOKEN: ${{ github.token }}   # shared macOS runners often hit the anonymous API limit
+        run: sh install.sh
+      - name: Installed app runs
         run: |
-          sh install.sh
-          ls -d /Applications/*.app | head
-          xattr -l /Applications/Obsidian.app | grep -c quarantine && exit 1 || echo "no quarantine flag"
-      - name: install.sh against Telegram-Stremio (dry run)
-        env:
-          TELESTREMIO_DRY_RUN: "1"
-        run: sh install.sh || echo "expected until a macOS build is released"
+          ls -d /Applications/TeleStremio.app
+          xattr -l /Applications/TeleStremio.app | grep -c quarantine && exit 1 || echo "no quarantine flag"
+          /Applications/TeleStremio.app/Contents/MacOS/TeleStremio --selftest
 
   linux:
     runs-on: ubuntu-22.04
@@ -48,10 +47,17 @@ jobs:
       - uses: actions/checkout@v4
       - name: install.sh without the API (web page fallback, dry run)
         env:
-          TELESTREMIO_REPO: obsidianmd/obsidian-releases
           TELESTREMIO_DRY_RUN: "1"
-        run: sed 's|"$API" 2>/dev/null|"https://api.github.com/invalid" 2>/dev/null|' install.sh > /tmp/i.sh && sh /tmp/i.sh | grep -q 'amd64.deb' 
-      - name: install.sh (real install of a sample .deb)
+        run: sed 's|"$API" 2>/dev/null|"https://api.github.com/invalid" 2>/dev/null|' install.sh > /tmp/i.sh && sh /tmp/i.sh | grep -q 'amd64.deb'
+      - name: install.sh (.deb through apt)
         env:
-          TELESTREMIO_REPO: obsidianmd/obsidian-releases
-        run: sh install.sh && dpkg -l | grep -i obsidian
+          GITHUB_TOKEN: ${{ github.token }}
+        run: sh install.sh && dpkg -l telestremio
+      - name: Installed app runs
+        run: /opt/telestremio/bin/TeleStremio --selftest
+      - name: install.sh (jar, for systems without apt)
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          sed 's/command -v apt-get >\/dev\/null 2>&1/false/' install.sh > /tmp/j.sh && sh /tmp/j.sh
+          ~/.local/bin/telestremio --selftest
