@@ -90,6 +90,43 @@
     document.querySelectorAll(`.os-tab[data-os="${os}"]`).forEach((t) => t.click());
   }
 
+  // ── direct downloads ─────────────────────────────────────────────────────
+  // Buttons point at the newest release page until the file list arrives, then at the file itself.
+  // Android picks the APK for the browser's CPU: aarch64 → arm64, armv7 → armeabi-v7a, anything
+  // unclear (armv8l, x86) → universal, which installs everywhere.
+  const androidApk = () => {
+    const p = `${navigator.platform || ""} ${ua}`;
+    if (/aarch64|arm64/i.test(p)) return /arm64-v8a\.apk$/;
+    if (/armv7/i.test(p)) return /armeabi-v7a\.apk$/;
+    return /universal\.apk$/;
+  };
+  const wanted = { android: androidApk(), windows: /\.msi$/, macos: /\.dmg$/, linux: /_amd64\.deb$/ };
+  const mb = (b) => `${Math.round(b / 1048576)} MB`;
+  async function latestAssets() {
+    try { const c = sessionStorage.getItem("assets"); if (c) return JSON.parse(c); } catch { /* private mode */ }
+    const r = await fetch("https://api.github.com/repos/weebzone/Telegram-Stremio/releases/latest", { headers: { Accept: "application/vnd.github+json" } });
+    if (!r.ok) throw new Error(`GitHub ${r.status}`);
+    const assets = (await r.json()).assets.map((a) => ({ name: a.name, url: a.browser_download_url, size: a.size }));
+    try { sessionStorage.setItem("assets", JSON.stringify(assets)); } catch { /* private mode */ }
+    return assets;
+  }
+  latestAssets().then((assets) => {
+    const fileFor = (key) => assets.find((a) => wanted[key].test(a.name));
+    document.querySelectorAll("[data-download]").forEach((btn) => {
+      const f = fileFor(btn.dataset.download);
+      if (!f) return;
+      btn.href = f.url;
+      btn.title = `${f.name} · ${mb(f.size)}`;
+    });
+    const hero = document.querySelector("[data-download-hero]");
+    const mine = os && fileFor(os);
+    if (hero && mine) {
+      hero.href = mine.url;
+      hero.title = `${mine.name} · ${mb(mine.size)}`;
+      hero.querySelector("span").textContent = `Download for ${{ android: "Android", windows: "Windows", macos: "macOS", linux: "Linux" }[os]}`;
+    }
+  }).catch(() => { /* rate-limited or offline: the release page links stay */ });
+
   // ── guide: OS tabs ───────────────────────────────────────────────────────
   document.querySelectorAll(".os-tabs").forEach((group) => {
     const buttons = group.querySelectorAll(".os-tab");
