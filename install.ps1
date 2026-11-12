@@ -13,9 +13,14 @@ if (-not [Environment]::Is64BitOperatingSystem) { throw "TeleStremio for Windows
 
 Say "Looking for the newest TeleStremio for Windows..."
 $releases = Invoke-RestMethod -Uri "https://api.github.com/repos/$repo/releases?per_page=20" -Headers @{ Accept = "application/vnd.github+json" }
+# Prefer an installer for this machine's CPU; skip ones built for the other architecture.
+$isArm = $env:PROCESSOR_ARCHITECTURE -eq "ARM64"
+$other = if ($isArm) { "x64|amd64|x86_64" } else { "arm64|aarch64" }
 $asset = $null
 foreach ($r in $releases) {
-    $asset = $r.assets | Where-Object { $_.name -like "*.msi" } | Select-Object -First 1
+    $msis = @($r.assets | Where-Object { $_.name -like "*.msi" -and $_.name -notmatch $other })
+    $asset = ($msis | Where-Object { $_.name -match $(if ($isArm) { "arm64|aarch64" } else { "x64|amd64|x86_64" }) } | Select-Object -First 1)
+    if (-not $asset) { $asset = $msis | Select-Object -First 1 }
     if ($asset) { break }
 }
 if (-not $asset) { throw "There is no Windows build on the $repo releases yet." }

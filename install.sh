@@ -18,11 +18,11 @@ need() { command -v "$1" >/dev/null 2>&1 || die "this needs '$1' — install it 
 need curl
 os=$(uname -s); arch=$(uname -m)
 
-# Newest release asset whose name matches $1 (an extended regex).
+# Release assets whose names match $1 (an extended regex), newest release first.
 asset_url() {
   curl -fsSL -H "Accept: application/vnd.github+json" "$API" \
     | grep -o '"browser_download_url": *"[^"]*"' | sed 's/.*"\(https[^"]*\)"$/\1/' \
-    | grep -E "$1" | head -n 1
+    | grep -E "$1"
 }
 
 fetch() { # url dest
@@ -36,7 +36,9 @@ tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
 case "$os" in
   Darwin)
     [ "$arch" = "arm64" ] || die "the macOS build is for Apple Silicon (M1 and newer); this Mac is $arch"
-    url=$(asset_url '\.dmg$') || true
+    # Apple Silicon or universal images only (skip Intel-only ones).
+    url=$(asset_url '\.dmg$' | grep -viE 'x64|x86_64|intel' | head -n 1) || true
+    [ -n "${url:-}" ] || url=$(asset_url '\.dmg$' | head -n 1) || true
     [ -n "${url:-}" ] || die "no macOS build on the $REPO releases yet"
     fetch "$url" "$tmp/TeleStremio.dmg"
     [ "${TELESTREMIO_DRY_RUN:-}" = "1" ] && exit 0
@@ -55,7 +57,7 @@ case "$os" in
   Linux)
     [ "$arch" = "x86_64" ] || die "the Linux build is for 64-bit x86; this machine is $arch"
     if command -v apt-get >/dev/null 2>&1; then
-      url=$(asset_url '_amd64\.deb$') || true
+      url=$(asset_url '_amd64\.deb$' | head -n 1) || true
       [ -n "${url:-}" ] || die "no Linux build on the $REPO releases yet"
       fetch "$url" "$tmp/telestremio.deb"
       [ "${TELESTREMIO_DRY_RUN:-}" = "1" ] && exit 0
@@ -66,8 +68,8 @@ case "$os" in
       need java
       jv=$(java -version 2>&1 | sed -n 's/.*version "\([0-9]*\).*/\1/p' | head -n 1)
       [ "${jv:-0}" -ge 17 ] 2>/dev/null || die "Java 17 or newer is needed (found ${jv:-none})"
-      jar=$(asset_url 'telestremio-linux-x64\.jar$') || true
-      lib=$(asset_url '/libtdjni\.so$') || true
+      jar=$(asset_url 'telestremio-linux-x64\.jar$' | head -n 1) || true
+      lib=$(asset_url '/libtdjni\.so$' | head -n 1) || true
       [ -n "${jar:-}" ] && [ -n "${lib:-}" ] || die "no Linux jar on the $REPO releases yet"
       dest="$HOME/.local/share/telestremio/app"
       mkdir -p "$dest" "$HOME/.local/bin" "$HOME/.local/share/applications"
