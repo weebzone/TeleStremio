@@ -22,7 +22,8 @@ jobs:
         shell: pwsh
         env:
           TELESTREMIO_DRY_RUN: "1"
-        run: try { ./install.ps1 } catch { Write-Host "expected until a Windows build is released: $_" }
+        run: |
+          try { ./install.ps1 } catch { Write-Host "expected until a Windows build is released - $_" }
 
   macos:
     runs-on: macos-15
