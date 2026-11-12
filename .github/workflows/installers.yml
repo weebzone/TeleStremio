@@ -16,7 +16,7 @@ jobs:
       - name: install.ps1 (real install of a sample .msi)
         shell: pwsh
         env:
-          TELESTREMIO_REPO: PowerShell/PowerShell
+          TELESTREMIO_REPO: keepassxreboot/keepassxc
         run: ./install.ps1
       - name: install.ps1 against Telegram-Stremio (dry run)
         shell: pwsh

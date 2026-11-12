@@ -18,11 +18,13 @@ need() { command -v "$1" >/dev/null 2>&1 || die "this needs '$1' — install it 
 need curl
 os=$(uname -s); arch=$(uname -m)
 
+# The releases list is fetched once (GitHub allows 60 anonymous API calls an hour per address).
+RELEASES=$(curl -fsSL -H "Accept: application/vnd.github+json" "$API" 2>/dev/null) \
+  || die "couldn't reach GitHub (it limits anonymous requests to 60 an hour; try again later)"
+
 # Release assets whose names match $1 (an extended regex), newest release first.
 asset_url() {
-  curl -fsSL -H "Accept: application/vnd.github+json" "$API" \
-    | grep -o '"browser_download_url": *"[^"]*"' | sed 's/.*"\(https[^"]*\)"$/\1/' \
-    | grep -E "$1"
+  printf '%s' "$RELEASES" | grep -o '"browser_download_url": *"[^"]*"' | sed 's/.*"\(https[^"]*\)"$/\1/' | grep -E "$1"
 }
 
 fetch() { # url dest
