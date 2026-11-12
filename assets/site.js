@@ -102,14 +102,69 @@
   };
   const wanted = { android: androidApk(), windows: /\.msi$/, macos: /\.dmg$/, linux: /_amd64\.deb$/ };
   const mb = (b) => `${Math.round(b / 1048576)} MB`;
-  async function latestAssets() {
-    try { const c = sessionStorage.getItem("assets"); if (c) return JSON.parse(c); } catch { /* private mode */ }
-    const r = await fetch("https://api.github.com/repos/weebzone/Telegram-Stremio/releases/latest", { headers: { Accept: "application/vnd.github+json" } });
+  // One API call gives the latest release and every release's download counts (60 calls/hour
+  // per visitor without a token, so the answer is kept for ten minutes).
+  async function releases() {
+    try { const c = JSON.parse(sessionStorage.getItem("releases")); if (c && Date.now() - c.at < 600000) return c; } catch { /* private mode */ }
+    const r = await fetch("https://api.github.com/repos/weebzone/Telegram-Stremio/releases?per_page=100", { headers: { Accept: "application/vnd.github+json" } });
     if (!r.ok) throw new Error(`GitHub ${r.status}`);
-    const assets = (await r.json()).assets.map((a) => ({ name: a.name, url: a.browser_download_url, size: a.size }));
-    try { sessionStorage.setItem("assets", JSON.stringify(assets)); } catch { /* private mode */ }
-    return assets;
+    const list = (await r.json()).filter((x) => !x.draft && /^TeleStremio/.test(x.name || ""));
+    const latest = list.find((x) => !x.prerelease) || list[0];
+    const data = {
+      at: Date.now(),
+      tag: latest.tag_name,
+      assets: latest.assets.map((a) => ({ name: a.name, url: a.browser_download_url, size: a.size })),
+      downloads: list.reduce((n, x) => n + x.assets.reduce((m, a) => m + a.download_count, 0), 0),
+    };
+    try { sessionStorage.setItem("releases", JSON.stringify(data)); } catch { /* private mode */ }
+    return data;
   }
+  const latestAssets = () => releases().then((d) => d.assets);
+
+  // ── hero numbers: count up when shown, then follow the live figures ─────────
+  const short = (n) => (n >= 10000 ? `${(n / 1000).toFixed(1)}K` : n.toLocaleString("en"));
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function countTo(el, to) {
+    const from = Number(el.dataset.at || 0);
+    el.dataset.at = to;
+    if (!el.firstChild) el.innerHTML = '<span class="stat-ghost" aria-hidden="true"></span><span class="stat-live"></span>';
+    const [ghost, live] = el.children;
+    ghost.textContent = short(to);
+    if (still || from === to) { live.textContent = short(to); return; }
+    const t0 = performance.now(), ms = 1800 + Math.min(String(to).length * 150, 700);
+    el.classList.remove("landed");
+    const step = (t) => {
+      const k = Math.min((t - t0) / ms, 1), e = 1 - Math.pow(1 - k, 4);
+      live.textContent = short(Math.round(from + (to - from) * e));
+      if (k < 1) requestAnimationFrame(step); else el.classList.add("landed");
+    };
+    requestAnimationFrame(step);
+  }
+  const stats = [...document.querySelectorAll(".stat-n")];
+  stats.forEach((el) => { el.innerHTML = '<span class="stat-ghost" aria-hidden="true"></span><span class="stat-live"></span>'; el.children[0].textContent = short(+el.dataset.to); });
+  let shown = false;
+  const show = () => { shown = true; stats.forEach((el, i) => setTimeout(() => countTo(el, +el.dataset.to), i * 110)); };
+  if ("IntersectionObserver" in window && stats.length) {
+    const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); show(); } }, { threshold: 0.4 });
+    io.observe(stats[0]);
+  } else show();
+  const platforms = (assets) => new Set(assets.flatMap((a) =>
+    /\.apk$/.test(a.name) ? ["Android", "Android TV"] : /\.msi$/.test(a.name) ? ["Windows"] : /\.dmg$/.test(a.name) ? ["macOS"]
+      : /\.deb$/.test(a.name) ? ["Linux"] : /\.jar$/.test(a.name) ? ["Server"] : [])).size;
+  function liveStats() {
+    releases().then((d) => {
+      const set = (key, n) => document.querySelectorAll(`[data-stat="${key}"]`).forEach((el) => {
+        el.dataset.to = n;
+        if (shown) countTo(el, n); else el.children[0].textContent = short(n);
+      });
+      set("downloads", d.downloads);
+      if (platforms(d.assets)) set("platforms", platforms(d.assets));
+      document.querySelectorAll("[data-tag]").forEach((t) => { t.textContent = d.tag; });
+    }).catch(() => { /* rate-limited or offline: the numbers in the page stay */ });
+  }
+  liveStats();
+  setInterval(() => { if (!document.hidden) liveStats(); }, 600000);
+
   latestAssets().then((assets) => {
     const fileFor = (key) => assets.find((a) => wanted[key].test(a.name));
     document.querySelectorAll("[data-download]").forEach((btn) => {
