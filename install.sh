@@ -18,13 +18,22 @@ need() { command -v "$1" >/dev/null 2>&1 || die "this needs '$1' — install it 
 need curl
 os=$(uname -s); arch=$(uname -m)
 
-# The releases list is fetched once (GitHub allows 60 anonymous API calls an hour per address).
-RELEASES=$(curl -fsSL -H "Accept: application/vnd.github+json" "$API" 2>/dev/null) \
-  || die "couldn't reach GitHub (it limits anonymous requests to 60 an hour; try again later)"
+# Download links of recent releases, newest first. One API call (GitHub allows 60 anonymous
+# calls an hour per address; GITHUB_TOKEN lifts that). If the API refuses, read the latest
+# release's asset list from the regular web page instead.
+auth=""; [ -n "${GITHUB_TOKEN:-}" ] && auth="Authorization: Bearer $GITHUB_TOKEN"
+LINKS=$(curl -fsSL -H "Accept: application/vnd.github+json" ${auth:+-H "$auth"} "$API" 2>/dev/null \
+  | grep -o '"browser_download_url": *"[^"]*"' | sed 's/.*"\(https[^"]*\)"$/\1/') || LINKS=""
+if [ -z "$LINKS" ]; then
+  tag=$(curl -fsSI "https://github.com/$REPO/releases/latest" 2>/dev/null | tr -d '\r' | sed -n 's|^[Ll]ocation: .*/releases/tag/||p' | head -n 1)
+  [ -n "$tag" ] && LINKS=$(curl -fsSL "https://github.com/$REPO/releases/expanded_assets/$tag" 2>/dev/null \
+    | grep -o 'href="/[^"]*/releases/download/[^"]*"' | sed 's|href="|https://github.com|; s|"$||')
+fi
+[ -n "$LINKS" ] || die "couldn't read the $REPO releases from GitHub; check your connection and try again"
 
 # Release assets whose names match $1 (an extended regex), newest release first.
 asset_url() {
-  printf '%s' "$RELEASES" | grep -o '"browser_download_url": *"[^"]*"' | sed 's/.*"\(https[^"]*\)"$/\1/' | grep -E "$1"
+  printf '%s\n' "$LINKS" | grep -E "$1"
 }
 
 fetch() { # url dest

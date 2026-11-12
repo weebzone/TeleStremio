@@ -32,6 +32,7 @@ jobs:
       - name: install.sh (real install of a sample .dmg)
         env:
           TELESTREMIO_REPO: obsidianmd/obsidian-releases
+          GITHUB_TOKEN: ${{ github.token }}   # shared macOS runners often hit the anonymous API limit
         run: |
           sh install.sh
           ls -d /Applications/*.app | head
@@ -45,6 +46,11 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+      - name: install.sh without the API (web page fallback, dry run)
+        env:
+          TELESTREMIO_REPO: obsidianmd/obsidian-releases
+          TELESTREMIO_DRY_RUN: "1"
+        run: sed 's|"$API" 2>/dev/null|"https://api.github.com/invalid" 2>/dev/null|' install.sh > /tmp/i.sh && sh /tmp/i.sh | grep -q 'amd64.deb' 
       - name: install.sh (real install of a sample .deb)
         env:
           TELESTREMIO_REPO: obsidianmd/obsidian-releases
