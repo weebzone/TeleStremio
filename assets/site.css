@@ -184,6 +184,10 @@ section { padding-block: clamp(56px, 7vw, 96px); }
 .platform .btn { margin-top: auto; justify-content: center; }
 .badge-you { margin-left: auto; font: 600 11px var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
 
+.install-cmds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 28px; }
+.install-cmds .codeblock { margin: 0; }
+@media (max-width: 860px) { .install-cmds { grid-template-columns: minmax(0, 1fr); } }
+
 /* ── privacy band ───────────────────────────────────── */
 .band { background: var(--surface); border-block: 1px solid var(--line); }
 .band .wrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; align-items: start; }

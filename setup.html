@@ -83,6 +83,9 @@
       <div class="callout"><p>TeleStremio checks for new versions twice a day and tells you, even when it's closed. Updating keeps your library.</p></div>
     </div>
     <div class="os-panel" data-group="install" data-os="windows" hidden>
+      <p>Quickest: open <b>PowerShell</b> and paste this. It downloads the newest installer and runs it.</p>
+      <div class="codeblock"><pre>irm https://weebzone.github.io/TeleStremio/install.ps1 | iex</pre><button class="copy" type="button">Copy</button></div>
+      <p class="muted">Or by hand:</p>
       <ol class="steps">
         <li><div>Download the <span class="mono">.msi</span> and run it.</div></li>
         <li><div>Windows SmartScreen may warn about an unknown publisher: choose <b>More info → Run anyway</b>.</div></li>
@@ -90,13 +93,18 @@
       </ol>
     </div>
     <div class="os-panel" data-group="install" data-os="macos" hidden>
+      <p>Quickest: open <b>Terminal</b> and paste this. It puts TeleStremio in Applications and skips the "unidentified developer" prompt.</p>
+      <div class="codeblock"><pre>curl -fsSL https://weebzone.github.io/TeleStremio/install.sh | sh</pre><button class="copy" type="button">Copy</button></div>
+      <p class="muted">Or by hand:</p>
       <ol class="steps">
         <li><div>Download the <span class="mono">.dmg</span> (Apple Silicon: M1 and newer) and drag TeleStremio into Applications.</div></li>
         <li><div>The app isn't notarized yet, so the first time, <b>right-click it → Open</b>, then confirm.</div></li>
       </ol>
     </div>
     <div class="os-panel" data-group="install" data-os="linux" hidden>
-      <p>On Debian or Ubuntu, install the package:</p>
+      <p>Quickest: paste this in a terminal. On Debian or Ubuntu it installs the package; elsewhere it sets up the jar with a launcher and a menu entry.</p>
+      <div class="codeblock"><pre>curl -fsSL https://weebzone.github.io/TeleStremio/install.sh | sh</pre><button class="copy" type="button">Copy</button></div>
+      <p class="muted">Or by hand, on Debian or Ubuntu:</p>
       <div class="codeblock"><pre>sudo apt install ./telestremio_*_amd64.deb</pre><button class="copy" type="button">Copy</button></div>
       <p>Elsewhere, keep <span class="mono">libtdjni.so</span> next to the jar and run it with Java 17 or newer:</p>
       <div class="codeblock"><pre>java -jar telestremio-linux-x64.jar</pre><button class="copy" type="button">Copy</button></div>

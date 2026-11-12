@@ -1,0 +1,50 @@
+name: Installer scripts
+
+# Runs install.ps1 on Windows and install.sh on macOS and Linux end to end. Until TeleStremio's
+# desktop builds are on the Telegram-Stremio releases, it points them at public projects that
+# ship the same kinds of files (.msi / .dmg / .deb) through TELESTREMIO_REPO.
+on:
+  push:
+    paths: ["install.sh", "install.ps1", ".github/workflows/installers.yml"]
+  workflow_dispatch:
+
+jobs:
+  windows:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - name: install.ps1 (real install of a sample .msi)
+        shell: pwsh
+        env:
+          TELESTREMIO_REPO: PowerShell/PowerShell
+        run: ./install.ps1
+      - name: install.ps1 against Telegram-Stremio (dry run)
+        shell: pwsh
+        env:
+          TELESTREMIO_DRY_RUN: "1"
+        run: try { ./install.ps1 } catch { Write-Host "expected until a Windows build is released: $_" }
+
+  macos:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: install.sh (real install of a sample .dmg)
+        env:
+          TELESTREMIO_REPO: obsidianmd/obsidian-releases
+        run: |
+          sh install.sh
+          ls -d /Applications/*.app | head
+          xattr -l /Applications/Obsidian.app | grep -c quarantine && exit 1 || echo "no quarantine flag"
+      - name: install.sh against Telegram-Stremio (dry run)
+        env:
+          TELESTREMIO_DRY_RUN: "1"
+        run: sh install.sh || echo "expected until a macOS build is released"
+
+  linux:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: install.sh (real install of a sample .deb)
+        env:
+          TELESTREMIO_REPO: obsidianmd/obsidian-releases
+        run: sh install.sh && dpkg -l | grep -i obsidian
