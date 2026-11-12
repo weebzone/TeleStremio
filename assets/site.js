@@ -48,6 +48,8 @@
       ["Backdrop, poster, cast, genres and runtime", "Each file with its quality and size", "Remove a bad copy in one tap"]],
     channels: ["Channels", "Point the app at your channels and groups. It indexes posts as they arrive.",
       ["Add by @username, t.me link or chat id", "Mark anime channels for absolute episode numbers", "Scan, rescan or stop with live progress"]],
+    catalogs: ["Catalogs", "Rows of your own in Stremio and Nuvio, next to the ones TMDB fills by itself.",
+      ["Make, rename, reorder or hide your own catalogs", "Add a title from its page", "Auto catalogs by language, OTT service and Latest Releases"]],
     settings: ["Settings", "Metadata keys and language, catalog rules, stream preferences, server, backups and appearance.",
       ["46 metadata languages with English fallback", "Preferred quality and size limits", "Back up the catalog to your Saved Messages"]],
   };
@@ -58,7 +60,7 @@
     const img = document.querySelector("#screen-img");
     if (img) { img.dataset.shot = key; img.alt = `TeleStremio ${title} screen`; }
     const phone = document.querySelector("#phone-img");
-    if (phone) { phone.dataset.shot = `phone-${key}`; phone.alt = `TeleStremio ${title} screen on Android`; }
+    if (phone) { phone.dataset.shot = `phone-${key === "catalogs" ? "library" : key}`; phone.alt = `TeleStremio ${title} screen on Android`; }
     swapShots();
     const note = document.querySelector(".screen-note");
     if (note) {
