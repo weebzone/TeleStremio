@@ -73,7 +73,10 @@ case "$os" in
       fetch "$url" "$tmp/telestremio.deb"
       [ "${TELESTREMIO_DRY_RUN:-}" = "1" ] && exit 0
       say "Installing the package (asks for your password)"
-      if [ "$(id -u)" -eq 0 ]; then apt-get install -y "$tmp/telestremio.deb"; else sudo apt-get install -y "$tmp/telestremio.deb"; fi
+      su=""; [ "$(id -u)" -eq 0 ] || su=sudo
+      # The package adds a menu entry; servers without a desktop lack the menu folder and the setup fails.
+      $su mkdir -p /etc/xdg/menus/applications-merged
+      $su apt-get install -y "$tmp/telestremio.deb"
       say "Done. Open TeleStremio from your app menu."
     else
       need java
