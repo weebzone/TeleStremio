@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TeleStremio</title>
+<meta name="description" content="TeleStremio turns your Telegram channels into a Stremio and Nuvio addon. Android, Android TV, Windows, macOS and Linux.">
+<meta property="og:title" content="TeleStremio">
+<meta property="og:description" content="Your Telegram channels, streaming in Stremio and Nuvio.">
+<meta property="og:image" content="shots/ink-home.webp">
+<meta name="theme-color" content="#121212">
+<link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script>try { const p = localStorage.getItem("palette"); if (p) document.documentElement.dataset.palette = p; } catch {}</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="TeleStremio home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="var(--accent)"/><path d="M11 9.5v13l11-6.5z" fill="var(--on-accent)"/><path d="M11 16h6.5" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round"/></svg>
+      TeleStremio
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#how">How it works</a>
+      <a href="#screens">Screens</a>
+      <a href="#download">Download</a>
+      <a href="setup.html">Setup guide</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="palette" role="group" aria-label="Theme">
+      <button type="button" data-p="ink" aria-label="Ink theme" title="Ink"><span style="background:#121212"></span></button>
+      <button type="button" data-p="paper" aria-label="Paper theme" title="Paper"><span style="background:#f3f0e8"></span></button>
+      <button type="button" data-p="night" aria-label="Night theme" title="Night"><span style="background:#000"></span></button>
+    </div>
+    <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow rise">Telegram → Stremio &amp; Nuvio</p>
+        <h1 class="rise d1">Your Telegram channels, <em>streaming</em> in Stremio.</h1>
+        <p class="lede rise d2">TeleStremio indexes the movies and series in the channels you follow and serves them as an addon. Press play and it starts while the file is still downloading; seek anywhere and it fetches from there.</p>
+        <div class="btn-row rise d3">
+          <a class="btn btn-primary" href="#download">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>
+            Download
+          </a>
+          <a class="btn btn-ghost" href="setup.html">Read the setup guide</a>
+        </div>
+        <div class="hero-meta">
+          <span><b>Android</b> phone &amp; TV</span><span><b>Windows</b> · <b>macOS</b> · <b>Linux</b></span><span><b>46</b> metadata languages</span>
+        </div>
+      </div>
+      <div class="window rise d2">
+        <div class="window-bar"><i></i><i></i><i></i><span>TeleStremio</span></div>
+        <div class="shot"><img data-shot="home" src="shots/ink-home.webp" alt="TeleStremio home screen with the addon running" width="1180" height="752"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <p class="eyebrow">How it works</p>
+      <h2 style="font-size:clamp(30px,4vw,46px);margin-top:12px">From a channel post to the play button.</h2>
+      <p class="lede" style="margin-top:14px">Nothing is uploaded anywhere. The app signs in with your Telegram account and runs the addon on your own device.</p>
+      <div class="path">
+        <svg class="wire" viewBox="0 0 100 2" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="1" x2="100" y2="1"/></svg>
+        <div class="stop">
+          <span class="n">01 · Channel</span>
+          <h3>Files land in your channels</h3>
+          <p>Movies, episodes and split archives, posted the way they always are.</p>
+          <div class="sample">Jailer.2.2026.1080p.WEBRip.mkv · 3.79GB</div>
+        </div>
+        <div class="stop">
+          <span class="n">02 · Index</span>
+          <h3>Matched and catalogued</h3>
+          <p>Titles, seasons and episodes are matched with TMDB, TVDB, Cinemeta or Kitsu, and new posts are picked up as they arrive.</p>
+          <div class="sample">Jailer 2 (2026) · tt33318732 · 1080p</div>
+        </div>
+        <div class="stop">
+          <span class="n">03 · Play</span>
+          <h3>Streams in Stremio or Nuvio</h3>
+          <p>Add one URL. Catalogs, metadata and streams appear in the apps you already use.</p>
+          <div class="sample">http://192.168.1.20:11471/manifest.json</div>
+        </div>
+      </div>
+
+      <div class="features">
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+          <h3>Plays before it finishes</h3>
+          <p>The first bytes and the seek index arrive before you press play, and a seek fetches from the new spot instead of waiting for the whole file.</p>
+        </div>
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          <h3>Catalogs that fill themselves</h3>
+          <p>Trending, Latest Releases and Recently Added, plus Netflix, Prime Video, Bollywood, K-Drama and more, built from what your channels hold.</p>
+        </div>
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h10M4 18h6"/><circle cx="18" cy="16" r="3"/></svg>
+          <h3>Nuvio collections</h3>
+          <p>Discover, Streaming Platforms and Regional folders for Nuvio. Folders with nothing behind them stay hidden.</p>
+        </div>
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+          <h3>Titles in your language</h3>
+          <p>Pick one of 46 metadata languages. Matching stays in English, and anything not translated falls back to English.</p>
+        </div>
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+          <h3>Backups to Saved Messages</h3>
+          <p>The whole catalog is saved to your Telegram after changes. Reinstall, sign in, restore. A 100,000-file library is a 2 MB backup.</p>
+        </div>
+        <div class="feature">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
+          <h3>Phone, TV, desktop or server</h3>
+          <p>Android phone and TV, Windows, macOS and Linux. On a server with no screen, run it with <code>--headless</code>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screens" style="padding-top:0">
+    <div class="wrap">
+      <p class="eyebrow">Screens</p>
+      <h2 style="font-size:clamp(30px,4vw,46px);margin-top:12px">Three themes, every screen.</h2>
+      <p class="lede" style="margin-top:14px">Ink, Paper and Night: pick one at the top of this page and the screenshots follow.</p>
+      <div class="tabs" role="tablist" aria-label="Screens">
+        <button class="tab" role="tab" data-screen="home" aria-selected="true">Home</button>
+        <button class="tab" role="tab" data-screen="library" aria-selected="false">Library</button>
+        <button class="tab" role="tab" data-screen="title" aria-selected="false">Title page</button>
+        <button class="tab" role="tab" data-screen="channels" aria-selected="false">Channels</button>
+        <button class="tab" role="tab" data-screen="settings" aria-selected="false">Settings</button>
+      </div>
+      <div class="screens">
+        <div class="window">
+          <div class="window-bar"><i></i><i></i><i></i><span>TeleStremio</span></div>
+          <div class="shot"><img id="screen-img" data-shot="home" src="shots/ink-home.webp" alt="TeleStremio Home screen" width="1180" height="752" loading="lazy"></div>
+        </div>
+        <div class="screen-note" aria-live="polite">
+          <h3>Home</h3>
+          <p></p>
+          <ul></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="download" style="padding-top:0">
+    <div class="wrap">
+      <p class="eyebrow">Download</p>
+      <h2 style="font-size:clamp(30px,4vw,46px);margin-top:12px">Pick your device.</h2>
+      <p class="lede" style="margin-top:14px">Free. Each desktop build passes a self-test on its own system before it's released.</p>
+      <div class="platforms">
+        <article class="platform" data-os="android">
+          <header>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>
+            <h3>Android</h3>
+          </header>
+          <p class="req">Phones and Android TV, Android 7 or newer. Updates itself.</p>
+          <p class="files">.apk · arm64, armv7, universal</p>
+          <a class="btn btn-primary" data-download="android" href="https://github.com/weebzone/TeleStremio-Landing/releases/latest">Get the APK</a>
+        </article>
+        <article class="platform" data-os="windows">
+          <header>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.5 10.5 4.4v7.1H3zM11.5 4.3 21 3v8.5h-9.5zM3 12.5h7.5v7.1L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></svg>
+            <h3>Windows</h3>
+          </header>
+          <p class="req">Windows 10 and 11, 64-bit.</p>
+          <p class="files">.msi installer · or a jar</p>
+          <a class="btn btn-ghost" data-download="windows" href="https://github.com/weebzone/TeleStremio-Landing/releases/latest">Get the installer</a>
+        </article>
+        <article class="platform" data-os="macos">
+          <header>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9s-1.8-.9-3-.9C6.9 7.3 5.4 8.3 4.6 9.8c-1.7 2.9-.4 7.2 1.2 9.6.8 1.2 1.7 2.4 2.9 2.4 1.2 0 1.6-.8 3-.8s1.8.8 3 .8 2-1.2 2.8-2.3c.9-1.3 1.2-2.6 1.3-2.7-.1 0-2.4-.9-2.4-4.2zM14.1 5.6c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.7 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.5 2.7-1.3z"/></svg>
+            <h3>macOS</h3>
+          </header>
+          <p class="req">Apple Silicon (M1 and newer).</p>
+          <p class="files">.dmg · not notarized yet</p>
+          <a class="btn btn-ghost" data-download="macos" href="https://github.com/weebzone/TeleStremio-Landing/releases/latest">Get the disk image</a>
+        </article>
+        <article class="platform" data-os="linux">
+          <header>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l6-6-6-6M12 19h8"/></svg>
+            <h3>Linux</h3>
+          </header>
+          <p class="req">64-bit x86. Desktop window, or headless on a server.</p>
+          <p class="files">.deb · or a jar</p>
+          <a class="btn btn-ghost" data-download="linux" href="https://github.com/weebzone/TeleStremio-Landing/releases/latest">Get the package</a>
+        </article>
+      </div>
+      <p class="muted" style="margin-top:18px;color:var(--muted);font-size:14px">Every file and older versions are on the <a href="https://github.com/weebzone/TeleStremio-Landing/releases">releases page</a>. New to it? <a href="setup.html">The setup guide</a> walks through the first ten minutes.</p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Privacy</p>
+        <h2 style="font-size:clamp(28px,3.6vw,40px);margin-top:12px">Your account, your device, nobody in between.</h2>
+      </div>
+      <div class="facts">
+        <div class="fact"><b>No server of ours</b><span>The addon runs on your phone, TV or computer. Stremio talks to it directly.</span></div>
+        <div class="fact"><b>Your own Telegram login</b><span>Sign in with your phone number or a QR code, the way Telegram Desktop does.</span></div>
+        <div class="fact"><b>Only the channels you choose</b><span>It reads the channels you add and nothing else; your chats stay out of it.</span></div>
+        <div class="fact"><b>Private by default</b><span>The addon listens on your local network unless you give it a public address yourself.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <p class="eyebrow">Before you install</p>
+      <h2 style="font-size:clamp(30px,4vw,46px);margin-top:12px">Questions people ask.</h2>
+      <div class="faq">
+        <details>
+          <summary>Do I need my own Telegram API ID?</summary>
+          <p class="answer">No. Sign in with your phone number. If you'd rather use your own app from my.telegram.org, the sign-in screen takes it.</p>
+        </details>
+        <details>
+          <summary>Stremio says it can't install a local http:// addon.</summary>
+          <p class="answer">Stremio blocks plain-http addresses in its install box. Sign in under Settings → Stremio account in the phone app and the addon is added to your Stremio account directly; when your IP changes, the account is updated too. Nuvio takes the URL as it is.</p>
+        </details>
+        <details>
+          <summary>Does it work outside my home network?</summary>
+          <p class="answer">Yes, if you give it an address your other devices can reach: Tailscale, or a domain in front of the device. Set it under Settings → Server → Public host.</p>
+        </details>
+        <details>
+          <summary>How much data does it use?</summary>
+          <p class="answer">Only what you watch, plus a few megabytes when you open a title so it starts fast. Close the player and downloading stops within a few seconds; the cache is trimmed to the limit you set.</p>
+        </details>
+        <details>
+          <summary>I added thousands of files while the app was closed.</summary>
+          <p class="answer">They're picked up the next time it opens: each channel scanned before is caught up from where the last scan ended.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span data-year>2026</span> TeleStremio</span>
+    <nav aria-label="Footer">
+      <a href="setup.html">Setup guide</a>
+      <a href="#download">Download</a>
+      <a href="https://github.com/weebzone/TeleStremio-Landing/releases">Releases</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="assets/site.js" defer></script>
+</body>
+</html>

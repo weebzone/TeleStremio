@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TeleStremio Setup Guide</title>
+<meta name="description" content="Install TeleStremio, sign in, add your channels and watch them in Stremio or Nuvio.">
+<meta name="theme-color" content="#121212">
+<link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script>try { const p = localStorage.getItem("palette"); if (p) document.documentElement.dataset.palette = p; } catch {}</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="TeleStremio home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="var(--accent)"/><path d="M11 9.5v13l11-6.5z" fill="var(--on-accent)"/></svg>
+      TeleStremio
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="./#how">How it works</a>
+      <a href="./#download">Download</a>
+      <a href="setup.html" aria-current="page">Setup guide</a>
+      <a href="./#faq">FAQ</a>
+    </nav>
+    <div class="palette" role="group" aria-label="Theme">
+      <button type="button" data-p="ink" aria-label="Ink theme" title="Ink"><span style="background:#121212"></span></button>
+      <button type="button" data-p="paper" aria-label="Paper theme" title="Paper"><span style="background:#f3f0e8"></span></button>
+      <button type="button" data-p="night" aria-label="Night theme" title="Night"><span style="background:#000"></span></button>
+    </div>
+    <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="wrap guide">
+  <nav class="toc" aria-label="On this page">
+    <a href="#before">Before you start</a>
+    <a href="#install">1 · Install</a>
+    <a href="#sign-in">2 · Sign in</a>
+    <a href="#channels">3 · Add channels</a>
+    <a href="#addon">4 · Turn on the addon</a>
+    <a href="#nuvio">5 · Nuvio</a>
+    <a href="#stremio">5 · Stremio</a>
+    <a href="#metadata">Better matches</a>
+    <a href="#outside">Watching away from home</a>
+    <a href="#backup">Backups</a>
+    <a href="#server">Running on a server</a>
+    <a href="#trouble">If something goes wrong</a>
+  </nav>
+
+  <article class="doc">
+    <p class="eyebrow">Setup guide</p>
+    <h1 style="margin-top:12px">From install to the first play.</h1>
+    <p class="lede">About ten minutes. You need a Telegram account that is a member of the channels you want to watch, and Stremio or Nuvio on the device you watch on.</p>
+
+    <h2 id="before">Before you start</h2>
+    <ul class="steps">
+      <li><div><b>Pick the device that runs TeleStremio.</b> It runs the addon, so it should be on whenever you watch: an Android TV box, a phone on charge, a computer or a small server.</div></li>
+      <li><div><b>Keep it on the same network</b> as your TV or player, or give it a public address later (<a href="#outside">Watching away from home</a>).</div></li>
+      <li><div><b>Join your channels in Telegram first.</b> TeleStremio only sees channels and groups your account can open.</div></li>
+    </ul>
+
+    <h2 id="install">1 · Install</h2>
+    <div class="os-tabs tabs" role="tablist" data-group="install">
+      <button class="tab os-tab" role="tab" data-os="android" aria-selected="true">Android</button>
+      <button class="tab os-tab" role="tab" data-os="windows" aria-selected="false">Windows</button>
+      <button class="tab os-tab" role="tab" data-os="macos" aria-selected="false">macOS</button>
+      <button class="tab os-tab" role="tab" data-os="linux" aria-selected="false">Linux</button>
+      <button class="tab os-tab" role="tab" data-os="server" aria-selected="false">Server</button>
+    </div>
+    <div class="os-panel" data-group="install" data-os="android">
+      <ol class="steps">
+        <li><div>Download the APK from the <a href="./#download">download section</a>. <span class="muted">If you're unsure which one, take <span class="mono">universal</span>.</span></div></li>
+        <li><div>Open it and allow installs from your browser or file manager when Android asks.</div></li>
+        <li><div>On Android TV, the free <b>Downloader</b> app from the Play Store can fetch the APK with the remote.</div></li>
+      </ol>
+      <div class="callout"><p>TeleStremio checks for new versions twice a day and tells you, even when it's closed. Updating keeps your library.</p></div>
+    </div>
+    <div class="os-panel" data-group="install" data-os="windows" hidden>
+      <ol class="steps">
+        <li><div>Download the <span class="mono">.msi</span> and run it.</div></li>
+        <li><div>Windows SmartScreen may warn about an unknown publisher: choose <b>More info → Run anyway</b>.</div></li>
+        <li><div>Open TeleStremio from the Start menu.</div></li>
+      </ol>
+    </div>
+    <div class="os-panel" data-group="install" data-os="macos" hidden>
+      <ol class="steps">
+        <li><div>Download the <span class="mono">.dmg</span> (Apple Silicon: M1 and newer) and drag TeleStremio into Applications.</div></li>
+        <li><div>The app isn't notarized yet, so the first time, <b>right-click it → Open</b>, then confirm.</div></li>
+      </ol>
+    </div>
+    <div class="os-panel" data-group="install" data-os="linux" hidden>
+      <p>On Debian or Ubuntu, install the package:</p>
+      <div class="codeblock"><pre>sudo apt install ./telestremio_*_amd64.deb</pre><button class="copy" type="button">Copy</button></div>
+      <p>Elsewhere, keep <span class="mono">libtdjni.so</span> next to the jar and run it with Java 17 or newer:</p>
+      <div class="codeblock"><pre>java -jar telestremio-linux-x64.jar</pre><button class="copy" type="button">Copy</button></div>
+    </div>
+    <div class="os-panel" data-group="install" data-os="server" hidden>
+      <p>No screen needed. Copy the jar and <span class="mono">libtdjni.so</span> to the server and start it headless; it signs in from the terminal. See <a href="#server">Running on a server</a>.</p>
+      <div class="codeblock"><pre>java -Xmx384m -jar telestremio-linux-x64.jar --headless</pre><button class="copy" type="button">Copy</button></div>
+    </div>
+
+    <h2 id="sign-in">2 · Sign in to Telegram</h2>
+    <ol class="steps">
+      <li><div>Enter your phone number. The country code is filled in for you.</div></li>
+      <li><div>Type the code Telegram sends to your Telegram app. <span class="muted">Never forward that code to anyone or any chat: Telegram blocks the login if you do.</span></div></li>
+      <li><div>If you use two-step verification, enter that password.</div></li>
+    </ol>
+    <p class="muted" style="margin-top:14px">On a computer you can scan a QR code instead: Telegram on your phone → Settings → Devices → Link Desktop Device. TeleStremio shows up in that list as its own device; you can end the session there at any time.</p>
+
+    <h2 id="channels">3 · Add your channels and scan</h2>
+    <ol class="steps">
+      <li><div>Open <b>Channels</b> and paste an <span class="mono">@username</span>, a <span class="mono">t.me</span> link or a chat id.</div></li>
+      <li><div>Tick <b>Anime</b> for channels that number episodes absolutely (One Piece 1123 rather than S21E35).</div></li>
+      <li><div>Press <b>Scan</b>. The first scan reads the whole channel, newest first; you can watch while it runs.</div></li>
+    </ol>
+    <figure class="figure">
+      <div class="window"><div class="window-bar"><i></i><i></i><i></i><span>Channels</span></div><div class="shot"><img data-shot="channels" src="shots/ink-channels.webp" alt="The Channels screen with three channels and the scan card" width="1180" height="752" loading="lazy"></div></div>
+      <figcaption>After that, new posts are indexed as they arrive, and anything posted while the app was closed is caught up the next time it opens.</figcaption>
+    </figure>
+
+    <h2 id="addon">4 · Turn on the addon</h2>
+    <ol class="steps">
+      <li><div>On <b>Home</b>, switch the addon server on. Its address appears underneath, for example:</div></li>
+    </ol>
+    <div class="codeblock"><pre>http://192.168.1.20:11471/manifest.json</pre><button class="copy" type="button">Copy</button></div>
+    <p>That address is what you give Stremio or Nuvio. It changes if the device gets a new IP on your network; Stremio accounts linked in step 5 follow it automatically.</p>
+    <div class="callout"><p>On Android, let TeleStremio run in the background: Settings → Apps → TeleStremio → Battery → Unrestricted. Otherwise Android may stop the addon while the screen is off.</p></div>
+
+    <h2 id="nuvio">5 · Watch in Nuvio</h2>
+    <ol class="steps">
+      <li><div>In Nuvio, open <b>Addons</b> and paste the addon address.</div></li>
+      <li><div>For ready-made folders (Discover, Streaming Platforms, Regional), copy <b>Nuvio collection</b> on TeleStremio's Home and import it in Nuvio. It looks like this:</div></li>
+    </ol>
+    <div class="codeblock"><pre>http://192.168.1.20:11471/nuvio-collection.json</pre><button class="copy" type="button">Copy</button></div>
+    <p class="muted">Only folders backed by your library show up: a Netflix folder appears once your channels have Netflix titles.</p>
+
+    <h2 id="stremio">5 · Watch in Stremio</h2>
+    <p>Stremio's install box refuses plain <span class="mono">http://</span> addresses from other devices, so link the addon to your Stremio account instead:</p>
+    <ol class="steps">
+      <li><div>In the TeleStremio phone app, open <b>Settings → Stremio account</b>.</div></li>
+      <li><div>Sign in with your Stremio email and password, then press <b>Sign in &amp; install</b>. The password goes to Stremio once and isn't stored.</div></li>
+      <li><div>Restart Stremio on your TV or computer. TeleStremio's catalogs and streams are there, and the account is updated when the address changes.</div></li>
+    </ol>
+
+    <h2 id="metadata">Better matches and your language</h2>
+    <p>Out of the box, titles are matched with Cinemeta. Free API keys from TMDB and TVDB give better matches, artwork and the Trending catalog:</p>
+    <ol class="steps">
+      <li><div>Create a TMDB key at <span class="mono">themoviedb.org → Settings → API</span>, and optionally a TVDB key.</div></li>
+      <li><div>Paste them under <b>Settings → Metadata</b> and save.</div></li>
+      <li><div>Pick a <b>metadata language</b> to see titles and descriptions in it. Rescan a channel to update titles already in the library.</div></li>
+    </ol>
+
+    <h2 id="outside">Watching away from home</h2>
+    <p>The addon listens on your local network. To reach it from elsewhere, give it an address other devices can open and set it under <b>Settings → Server → Public host</b>:</p>
+    <ul class="steps">
+      <li><div><b>Tailscale</b> on both devices is the easiest: turn on <i>Use Tailscale address</i> and the addon advertises its Tailscale address.</div></li>
+      <li><div>Or put a domain with HTTPS in front of the device and enter that domain as the public host.</div></li>
+    </ul>
+
+    <h2 id="backup">Backups and moving devices</h2>
+    <p>With <b>Back up to Telegram</b> on, the catalog is saved to your Saved Messages a while after it changes (at most every six hours). After a reinstall or on a new device, sign in with the same account and the app offers to restore it.</p>
+    <p class="muted">You can also export and import a file under Settings → Backup. A library of 100,000 files backs up to about 2 MB.</p>
+
+    <h2 id="server">Running on a server</h2>
+    <p>Start the jar with <span class="mono">--headless</span>. It asks for your phone number and code once, then starts the addon whenever it runs. Type these at its prompt:</p>
+    <div class="codeblock"><pre>add @mychannel        # add a channel (add "anime" at the end for anime)
+scan                  # scan every channel
+restore               # restore the catalog from Saved Messages
+status                # addon address and scan progress
+quit</pre><button class="copy" type="button">Copy</button></div>
+    <p>Ports: <span class="mono">11471</span> for the addon and <span class="mono">11472</span> for streams. Keep them closed to the internet unless you mean to share them; put a domain with HTTPS in front if you want access from outside.</p>
+
+    <h2 id="trouble">If something goes wrong</h2>
+    <h3>Stremio shows no TeleStremio catalogs</h3>
+    <p>Turn on <b>Settings → Catalog → Show catalogs in Stremio</b>, then install the addon again (or press <b>Install / update</b> under Stremio account).</p>
+    <h3>A title is missing or matched to the wrong film</h3>
+    <p>Add a TMDB key, or put the IMDb link in the post's caption: TeleStremio reads <span class="mono">tt1234567</span> and IMDb or TMDB links, including links hidden behind words.</p>
+    <h3>Playback stops when the screen turns off</h3>
+    <p>Android is pausing the app. Set its battery use to <i>Unrestricted</i> (<a href="#addon">step 4</a>).</p>
+    <h3>Something else</h3>
+    <p>Open <b>Settings → Logs</b>, press <b>Share</b> and send the log with a short description of what you did.</p>
+
+    <p style="margin-top:56px"><a class="btn btn-primary" href="./#download">Download TeleStremio</a></p>
+  </article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span data-year>2026</span> TeleStremio</span>
+    <nav aria-label="Footer">
+      <a href="./">Home</a>
+      <a href="./#download">Download</a>
+      <a href="https://github.com/weebzone/TeleStremio-Landing/releases">Releases</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="assets/site.js" defer></script>
+</body>
+</html>
